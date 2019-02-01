@@ -24,3 +24,10 @@ class LoginViews(View):
         else:
             return render(request,"login.html",{"login_form":login_form})
 
+class IndexView(View):
+    def get(self,request):
+        return render(request,'index.html',{})
+
+
+
+

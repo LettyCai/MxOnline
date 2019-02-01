@@ -15,10 +15,11 @@ Including another URLconf
 """
 
 from django.urls import path
-from apps.users.views import LoginViews
-import extra_apps.xadmin
+from apps.users.views import LoginViews,IndexView
+from django.contrib import admin
 
 urlpatterns = [
-    path('xadmin/', xadmin.site.urls),
+    path('xadmin/', admin.site.urls),
     path('login/', LoginViews.as_view(),name="login"),
+    path('index/', IndexView.as_view(),name="index"),
 ]
