@@ -136,3 +136,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+EMAIL_HOST = "smtp.126.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "sei_clj@126.com"
+EMAIL_HOST_PASSWORD = "smjs6btj"
+EMAIL_USE_TLS = False
+EMAIL_FROM = "sei_clj@126.com"
