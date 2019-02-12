@@ -24,6 +24,13 @@ def send_register_email(email,type="register"):
         if email_status == True:
             pass
 
+    if type == "forget":
+        email_title = "This is finding password email:"
+        email_body = "Please click this link to modify your password : http://127.0.0.1:8000/reset_password/{0}".format(random_str)
+        email_status = send_mail(email_title,email_body,EMAIL_FROM,[email])
+        if email_status == True:
+            pass
+
 
 
 def generater_random_str(random_length=8):

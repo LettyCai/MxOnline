@@ -15,16 +15,18 @@ Including another URLconf
 """
 
 from django.urls import path,include,re_path
-from apps.users.views import LoginViews,IndexView,RegisterView,ActiveUserView
+from apps.users.views import LoginViews,IndexView,RegisterView,ActiveUserView,ForgetPasswordView,ResetPasswordView,PasswordModifyView
 from django.contrib import admin
 
 urlpatterns = [
     path('',  IndexView.as_view(),name="index"),
     path('xadmin/', admin.site.urls),
     path('login/', LoginViews.as_view(),name="login"),
-#    path('index/', IndexView.as_view(),name="index"),
     path('register/', RegisterView.as_view(),name="register"),
+    path('forget_password/', ForgetPasswordView.as_view(), name="forget_password"),
+    path('modify_password/',PasswordModifyView.as_view(),name="modify_password"),
     path(r'^captcha/', include('captcha.urls')),
-    re_path(r'^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name="active_user")
-#example    re_path(r'^articles/(?P<year>[0-9]{4})/$', views.year_archive),
+    re_path(r'^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name="active_user"),
+    re_path(r'^reset_password/(?P<reset_code>.*)/$',ResetPasswordView.as_view(),name="reset_password"),
+
 ]

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from .forms import LoginForm,RegisterForm
+from .forms import LoginForm,RegisterForm,ForgetPasswordForm,ResetPasswordForm
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
@@ -85,3 +85,50 @@ class ActiveUserView(View):
                 user.is_active = True
                 user.save()
         return render(request,'login.html')
+
+
+class ForgetPasswordView(View):
+    def get(self,request):
+        forget_password_form = ForgetPasswordForm()
+        return render(request, 'forgetpwd.html',{'forget_password_form':forget_password_form})
+
+    def post(self,request):
+        #forget_password_form = ForgetPasswordForm()
+        #forget_password_form.username = request.POST.get("email","")
+        email = request.POST.get("email", "")
+        all_records = UserProfile.objects.filter(email=email)
+        if all_records :
+            for record in all_records:
+                send_register_email(email,"forget")
+                return render(request,'forgetpwd.html',{"msg":"请登陆邮箱完成验证"})
+        else:
+            return render(request,'forgetpwd.html',{"msg":"用户不存在！"})
+
+class ResetPasswordView(View):
+    def get(self,request,reset_code):
+        all_records = EmailVerifyRecord.objects.filter(code=reset_code)
+        if all_records:
+            for record in all_records:
+                email = record.email
+                return render(request,"password_reset.html",{"email":email})
+        else:
+            return render(request,"forgetpwd.html",{"msg":"链接不存在"})
+
+class PasswordModifyView(View):
+    def post(self,request):
+        email = request.POST.get("email","")
+        all_records = UserProfile.objects.filter(email = email)
+        if all_records:
+            for record in all_records:
+                password1 = request.POST.get("password1","")
+                password2 = request.POST.get("password2", "")
+                if password1 == password2:
+                    record.password = make_password(password=password2)
+                    record.save()
+                    return render(request, "login.html",{"msg":"重置成功，请登陆！"} )
+                else:
+                    return render(request,"password_reset.html",{"msg":"密码不一致！"})
+        else:
+            return render(request,"password_reset.html",{"msg":"用户名不存在！"})
+
+
