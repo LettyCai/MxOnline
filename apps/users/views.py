@@ -125,6 +125,9 @@ class PasswordModifyView(View):
                 if password1 == password2:
                     record.password = make_password(password=password2)
                     record.save()
+                    verify_record = EmailVerifyRecord.objects.filter(email = email)
+                    for record in verify_record:
+                        record.delete()
                     return render(request, "login.html",{"msg":"重置成功，请登陆！"} )
                 else:
                     return render(request,"password_reset.html",{"msg":"密码不一致！"})
