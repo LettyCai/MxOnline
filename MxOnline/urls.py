@@ -17,9 +17,11 @@ Including another URLconf
 from django.urls import path,include,re_path
 from apps.users.views import LoginViews,IndexView,RegisterView,ActiveUserView,ForgetPasswordView,ResetPasswordView,PasswordModifyView
 from django.contrib import admin
+from apps.organization.views import OrglistView
 
 urlpatterns = [
     path('',  IndexView.as_view(),name="index"),
+    path('org-list/', OrglistView.as_view(),name="org-list"),
     path('xadmin/', admin.site.urls),
     path('login/', LoginViews.as_view(),name="login"),
     path('register/', RegisterView.as_view(),name="register"),
