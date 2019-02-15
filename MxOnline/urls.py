@@ -18,6 +18,9 @@ from django.urls import path,include,re_path
 from apps.users.views import LoginViews,IndexView,RegisterView,ActiveUserView,ForgetPasswordView,ResetPasswordView,PasswordModifyView
 from django.contrib import admin
 from apps.organization.views import OrglistView
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
 
 urlpatterns = [
     path('',  IndexView.as_view(),name="index"),
@@ -30,5 +33,4 @@ urlpatterns = [
     path(r'^captcha/', include('captcha.urls')),
     re_path(r'^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name="active_user"),
     re_path(r'^reset_password/(?P<reset_code>.*)/$',ResetPasswordView.as_view(),name="reset_password"),
-
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

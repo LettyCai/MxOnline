@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.users',
     'captcha',
+    'apps.organization',
+    'pure_pagination',
 ]
 AUTH_USER_MODEL = "users.UserProfile"
 
@@ -72,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -142,3 +145,14 @@ EMAIL_HOST_USER = "sei_clj@126.com"
 EMAIL_HOST_PASSWORD = "smjs6btj"
 EMAIL_USE_TLS = False
 EMAIL_FROM = "sei_clj@126.com"
+
+#pagination分页设置
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 5,
+    'MARGIN_PAGES_DISPLAYED': 2,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
