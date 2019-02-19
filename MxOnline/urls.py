@@ -24,7 +24,6 @@ from django.views.static import serve
 
 urlpatterns = [
     path('',  IndexView.as_view(),name="index"),
-    path('org-list/', OrglistView.as_view(),name="org-list"),
     path('xadmin/', admin.site.urls),
     path('login/', LoginViews.as_view(),name="login"),
     path('register/', RegisterView.as_view(),name="register"),
@@ -33,4 +32,5 @@ urlpatterns = [
     path(r'^captcha/', include('captcha.urls')),
     re_path(r'^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name="active_user"),
     re_path(r'^reset_password/(?P<reset_code>.*)/$',ResetPasswordView.as_view(),name="reset_password"),
+    path('org/', include('organization.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
