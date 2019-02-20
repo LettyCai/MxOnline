@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .models import CourseOrg,CityDict
+from apps.courses.models import Course
 #分页
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
@@ -53,3 +54,17 @@ class OrglistView(View):
             "org_ct":org_ct,
             "hot_orgs":hot_orgs,
             "sort":sort})
+
+class OrgDetailView(View):
+    def get(self,request):
+
+        org = request.GET.get("org",'')
+        if org :
+            courses = Course.objects.filter(course_org=org)
+        return render(request,"org-detail-homepage.html",{"courses":courses})
+
+class CourseDetailView(View):
+    def get(self,request,org_id):
+        if org_id:
+            courses = Course.objects.filter(course_org=org_id)
+        return render(request,"org-detail-course.html",{"courses":courses})
