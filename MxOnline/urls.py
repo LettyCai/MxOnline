@@ -21,6 +21,7 @@ from apps.organization.views import OrglistView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
+from apps.operation.views import UserAskView
 
 urlpatterns = [
     path('',  IndexView.as_view(),name="index"),
@@ -33,4 +34,5 @@ urlpatterns = [
     re_path(r'^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name="active_user"),
     re_path(r'^reset_password/(?P<reset_code>.*)/$',ResetPasswordView.as_view(),name="reset_password"),
     path('org/', include('organization.urls')),
+    path('operation/', include('operation.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
