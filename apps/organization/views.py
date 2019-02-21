@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from .models import CourseOrg,CityDict
+from .models import CourseOrg,CityDict,Teacher
 from apps.courses.models import Course
 #分页
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
@@ -56,15 +56,48 @@ class OrglistView(View):
             "sort":sort})
 
 class OrgDetailView(View):
-    def get(self,request):
+    def get(self,request,org_id):
 
-        org = request.GET.get("org",'')
-        if org :
-            courses = Course.objects.filter(course_org=org)
-        return render(request,"org-detail-homepage.html",{"courses":courses})
+        if org_id :
+            courses = Course.objects.filter(course_org=org_id)[:3]
+
+            teachers = Teacher.objects.filter(org_id=org_id)[:3]
+
+            orgs = Course.objects.filter(course_org=org_id)
+            for org in orgs:
+                desc = org.desc
+
+        return render(request,"org-detail-homepage.html",{"teachers":teachers,"courses":courses,"desc":desc,"org_id":org_id})
 
 class CourseDetailView(View):
     def get(self,request,org_id):
         if org_id:
             courses = Course.objects.filter(course_org=org_id)
-        return render(request,"org-detail-course.html",{"courses":courses})
+
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # Provide Paginator with the request object for complete querystring generation
+        p = Paginator(courses,3,request=request)
+        courses = p.page(page)
+
+        return render(request,"org-detail-course.html",{"courses":courses,"org_id":org_id})
+
+class OrgDescView(View):
+    def get(self,request,org_id):
+        if org_id:
+            orgs = Course.objects.filter(course_org=org_id)
+            for org in orgs:
+                desc = org.desc
+            return render(request,"org-detail-desc.html",{"desc":desc,"org_id":org_id})
+        else:
+            pass
+
+class OrgTeacherView(View):
+    def get(self,request,org_id):
+        if org_id:
+            teachers = Teacher.objects.filter(org_id=org_id)
+
+        return render(request,"org-detail-teachers.html",{"teachers":teachers,"org_id":org_id})
