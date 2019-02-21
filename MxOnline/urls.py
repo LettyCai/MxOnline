@@ -35,4 +35,5 @@ urlpatterns = [
     re_path(r'^reset_password/(?P<reset_code>.*)/$',ResetPasswordView.as_view(),name="reset_password"),
     path('org/', include('organization.urls')),
     path('operation/', include('operation.urls')),
+    path('courses/', include('courses.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
